@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:07:44 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/03 22:53:03 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/10 12:51:51 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	ft_free_array(size_t i, char **array);
 void	ft_free_strptr(char **strptr);
 void	ft_free_triptr(char ***strptr);
 int		ft_is_all_white_spaces(char *s);
+int		ft_is_white_space(char c);
+char	*ft_free_return(char *str);
 
 //printf_fd_fd_fd
 int		ft_printf_fd(int fd, const char *str, ...);

@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 10:52:54 by hitran            #+#    #+#             */
-/*   Updated: 2024/06/07 09:43:20 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/11 15:50:57 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i] != '\0')
 		i++;
 	return (i);
