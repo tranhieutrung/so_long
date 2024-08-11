@@ -6,7 +6,7 @@
 #    By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 14:17:11 by hitran            #+#    #+#              #
-#    Updated: 2024/08/08 14:17:13 by hitran           ###   ########.fr        #
+#    Updated: 2024/08/11 19:41:07 by hitran           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,19 +17,21 @@ INCLUDES 		= -I./includes -I./mylib/includes
 RM 				= rm -f
 
 # Directories
-MAN_DIR 		= ./sources/mandatory
-BONUS_DIR		= ./sources/bonus
 MYLIB_DIR	 	= ./mylib
 MLX42_DIR		= ./MLX42
+MAN_DIR 		= ./sources/mandatory
+BONUS_DIR		= ./sources/bonus
+MAP_DIR			= ./sources/map
+UTILS_DIR		= ./sources/utils
 
 # Source files by directory
-MAN_FILES 		= 	
-					
-BONUS_FILES 	= 	
+MAP_FILES 		= 	read_map.c				validate_map.c		
 
-MAN_SRCS		= 	main.c $(addprefix $(MAN_DIR)/, $(MAN_FILES))
+UTILS_FILES		= 	handle_errors.c
 
-BONUS_SRCS		=	main_bonus.c $(addprefix $(BONUS_DIR)/, $(BONUS_FILES))
+MAN_SRCS		= 	main.c 	\
+					$(addprefix $(MAP_DIR)/, $(MAP_FILES)) \
+					$(addprefix $(UTILS_DIR)/, $(UTILS_FILES))
 					
 # Library
 MYLIB 			= $(MYLIB_DIR)/mylib.a
@@ -38,19 +40,10 @@ MYLIB 			= $(MYLIB_DIR)/mylib.a
 NAME 			= so_long
 
 # Targets
-all : mandatory
+all : $(NAME)
 
-mandatory : .mandatory
-.mandatory: $(MYLIB) $(MAN_SRCS)
+$(NAME): $(MYLIB) $(MAN_SRCS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(MAN_SRCS) $(MYLIB) -o $(NAME)
-	@touch .mandatory
-	@$(RM) .bonus
-
-bonus: .bonus
-.bonus: $(MYLIB) $(BONUS_SRCS)
-	$(CC) $(CFLAGS) $(INCLUDES) $(BONUS_SRCS) $(MYLIB) -o $(NAME)
-	@touch .bonus
-	@$(RM) .mandatory
 
 $(MYLIB):
 	$(MAKE) -C $(MYLIB_DIR)
