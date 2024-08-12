@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/11 20:05:00 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/12 11:17:55 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	read_map(t_map *map, char *map_path)
 		if (map->arr[map->row] && !ft_strlen(map->arr[map->row]))
 			handle_map_error(map, NULL, "Error: Map: Empty lines");
 		if (map->arr[map->row] == NULL)
-			break  ;
+			break ;
 		map->row++;
 		if (map->row > MAX_ROW)
 			handle_map_error(map, NULL, "Error: Map: Exceeds the maximum size");
