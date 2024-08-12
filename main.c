@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/11 08:37:49 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/12 11:10:40 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	main(int argc, char **argv)
 {
 	t_map		map;
-	// t_solong	solong;
 
 	if (argc != 2)
 	{

@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/11 19:40:52 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/12 11:18:14 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ typedef struct s_map
 	int		c_count;
 	int		p_row;
 	int		p_col;
+	char	target;
+	int		target_x;
+	int		target_y;
 }	t_map;
 
 typedef struct s_solong
