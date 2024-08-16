@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/12 11:18:14 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/16 14:48:03 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <fcntl.h>
 
 // Render pixels = 64
-// MAX_COL = 2760 / 64
-// MAX_ROW = 1720 / 64
+// MAX_COL = 3840 / 64
+// MAX_ROW = 2160 / 64
 # define MAX_COL 44
 # define MAX_ROW 26
 
@@ -34,15 +34,15 @@ typedef struct s_map
 	int		c_count;
 	int		p_row;
 	int		p_col;
-	char	target;
-	int		target_x;
-	int		target_y;
+	int		c_path;
+	int		e_path;
 }	t_map;
 
-typedef struct s_solong
-{
-
-}	t_solong;
+// typedef struct s_solong
+// {
+// 	t_map	*map;
+// 	mlx_t	mlx;
+// }	t_solong;
 //		ALGORITHM	//
 
 //		MAP			//

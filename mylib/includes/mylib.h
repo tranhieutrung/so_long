@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:07:44 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/10 12:51:51 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/16 15:21:07 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	ft_free_triptr(char ***strptr);
 int		ft_is_all_white_spaces(char *s);
 int		ft_is_white_space(char c);
 char	*ft_free_return(char *str);
+char	**ft_matrix_dup(char **matrix, int row);
 
 //printf_fd_fd_fd
 int		ft_printf_fd(int fd, const char *str, ...);
