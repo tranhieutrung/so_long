@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_errors.c                                    :+:      :+:    :+:   */
+/*   ft_matrixlen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/10 22:44:17 by hitran           ###   ########.fr       */
+/*   Created: 2024/04/16 14:55:45 by likong            #+#    #+#             */
+/*   Updated: 2024/08/17 15:45:31 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "mylib.h"
 
-void	handle_map_error(t_map *map, char *line, char *message)
+size_t	ft_matrixlen(char **matrix)
 {
-	ft_free_triptr(&map->arr);
-	close(map->fd);
-	if (line)
-		free (line);
-	ft_putendl_fd(message, 2);
-	exit (1);
+	size_t	i;
+
+	i = 0;
+	if (!matrix)
+		return (0);
+	while (matrix[i])
+		i++;
+	return (i);
 }
