@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Suppress output for make commands
-make fclean > /dev/null
+# make fclean > /dev/null
 make > /dev/null
 
 # Define color and bold formatting
@@ -17,26 +17,34 @@ echo -e
 echo -e "${GREEN}${BOLD}1. TEST ERROR FILES:${NC}"
 echo -e
 
-echo "Test 1: NULL"
+echo "Test 1: No args"
+./so_long
+echo -e
+
+echo "Test 2: NULL"
 ./so_long ""
 echo -e
 
-echo "Test 2: no-existing-file.ber"
+echo "Test 3: All spaces"
+./so_long "    "
+echo -e
+
+echo "Test 4: no-existing-file.ber"
 ./so_long assets/maps/invalid/no-existing-file.ber
 echo -e
 
 touch  assets/maps/invalid/map-unreadable.ber > /dev/null
 chmod -r assets/maps/invalid/map-unreadable.ber > /dev/null
-echo "Test 3: map-unreadable.ber"
+echo "Test 5: map-unreadable.ber"
 ./so_long assets/maps/invalid/map-unreadable.ber
 rm -rf  assets/maps/invalid/map-unreadable.ber > /dev/null
 echo -e
 
-echo "Test 4: .map-hidden.ber"
+echo "Test 6: .map-hidden.ber"
 ./so_long assets/maps/invalid/.map-hidden.ber
 echo -e
 
-echo "Test 5: map-invalid-extension.txt"
+echo "Test 7: map-invalid-extension.txt"
 ./so_long assets/maps/invalid/map-invalid-extension.txt
 echo -e
 
@@ -91,16 +99,16 @@ echo "Test 12: map-collectible-fail.ber"
 ./so_long assets/maps/invalid/map-collectible-fail.ber
 echo -e
 
-# Print valid map tests with green color and bold formatting
-echo -e "${GREEN}${BOLD}TEST VALID MAPS:${NC}"
-echo -e
+# # Print valid map tests with green color and bold formatting
+# echo -e "${GREEN}${BOLD}TEST VALID MAPS:${NC}"
+# echo -e
 
-echo "Test 1: 1.ber"
-./so_long assets/maps/1.ber
-echo -e
+# echo "Test 1: 1.ber"
+# ./so_long assets/maps/1.ber
+# echo -e
 
-echo "Test 2: 2.ber"
-./so_long assets/maps/2.ber
-echo -e
+# echo "Test 2: 2.ber"
+# ./so_long assets/maps/2.ber
+# echo -e
 
-make fclean > /dev/null
+# make fclean > /dev/null

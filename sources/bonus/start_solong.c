@@ -1,44 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_hook.c                                         :+:      :+:    :+:   */
+/*   start_solong.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 23:50:48 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 11:57:32 by hitran           ###   ########.fr       */
+/*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
+/*   Updated: 2024/08/20 23:14:55 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	move_player(t_solong *sl)
+static void	move_player(t_solong *sl)
 {
-	render_image(sl, sl->image[0], sl->current);
+	image_to_window(sl, sl->image[0], sl->current.row, sl->current.col);
 	if (sl->map->arr[sl->next.row][sl->next.col] == 'C')
 	{
 		sl->map->arr[sl->current.row][sl->current.col] = '0';
 		sl->taken++;
-		render_image(sl, sl->image[0], sl->next);
+		image_to_window(sl, sl->image[0], sl->next.row, sl->next.col);
 		if (sl->taken == sl->map->c_count)
-			render_image(sl, sl->image[4], sl->exit);
+			image_to_window(sl, sl->image[4],
+				sl->map->exit.row, sl->map->exit.col);
 	}
-	else if (sl->next.row == sl->exit.row && sl->next.col == sl->exit.col
-		&& sl->taken == sl->map->c_count)
+	else if (sl->next.row == sl->map->exit.row
+		&& sl->next.col == sl->map->exit.col && sl->taken == sl->map->c_count)
 	{
-		ft_printf_fd(1, "Moves: %u, Collectibles: %u\n",
-			++sl->moves, sl->taken);
+		ft_printf_fd(1, "Number of movements: %u\n", ++sl->moves);
 		ft_printf_fd(1, "You win!\n");
 		exit_solong(sl, EXIT_SUCCESS);
 	}
 	sl->map->arr[sl->current.row][sl->current.col] = '0';
 	sl->map->arr[sl->next.row][sl->next.col] = 'P';
-	ft_printf_fd(1, "Moves: %u, Collectibles: %u\n", ++sl->moves, sl->taken);
-	render_image(sl, sl->image[2], sl->next);
+	ft_printf_fd(1, "Number of movements: %u\n", ++sl->moves);
+	image_to_window(sl, sl->image[2], sl->next.row, sl->next.col);
 	sl->current = sl->next;
 }
 
-void	key_hook(mlx_key_data_t keydata, void *param)
+static void	key_hook(mlx_key_data_t keydata, void *param)
 {
 	t_solong	*sl;
 
@@ -57,14 +57,34 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 			sl->next = (t_point){sl->current.row, sl->current.col + 1};
 		else
 			return ;
-		if (sl->map->arr[sl->next.row][sl->next.col] == '1')
-			ft_printf_fd(1, "Can not go through walls\n");
-		else
+		if (sl->map->arr[sl->next.row][sl->next.col] != '1')
 			move_player(sl);
 	}
 }
 
-void	close_hook(void *param)
+static void	close_hook(void *param)
 {
 	exit_solong((t_solong *)param, EXIT_SUCCESS);
+}
+
+static void	init_solong(t_solong *sl)
+{
+	sl->width = sl->map->cols * PIXELS;
+	sl->height = sl->map->rows * PIXELS;
+	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
+	sl->mlx = mlx_init(sl->width, sl->height, "so_long", true);
+	if (!sl->mlx)
+		game_error(sl, mlx_strerror(mlx_errno));
+	sl->current = sl->map->start;
+	load_png_to_image(sl);
+	display_map(sl, -1, -1);
+}
+
+void	start_solong(t_solong *sl)
+{
+	init_solong(sl);
+	mlx_key_hook(sl->mlx, key_hook, sl);
+	mlx_close_hook(sl->mlx, close_hook, sl);
+	mlx_loop(sl->mlx);
+	exit_solong(sl, EXIT_SUCCESS);
 }

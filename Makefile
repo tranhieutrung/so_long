@@ -6,7 +6,7 @@
 #    By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 14:17:11 by hitran            #+#    #+#              #
-#    Updated: 2024/08/20 00:19:34 by hitran           ###   ########.fr        #
+#    Updated: 2024/08/20 23:24:02 by hitran           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,16 +21,27 @@ RM 				= rm -rf
 MYLIB_DIR	 	= ./mylib
 MLX42_DIR		= ./MLX42
 MAN_DIR 		= ./sources/mandatory
-BONUS_DIR		= ./sources/bonus
+BN_DIR			= ./sources/bonus
 MAP_DIR			= map
 UTILS_DIR		= utils
 
 # Source files by directory
-MAN_FILES 		= 	start_solong.c 	read_map.c		utils.c  key_hook.c
+MAN_FILES 		= 	start_solong.c	\
+					read_map.c		\
+					utils.c			\
+					display_map.c		\
+					load_png_to_image.c	
 
-MAN_SRCS		= 	main.c 	\
-					$(addprefix $(MAN_DIR)/, $(MAN_FILES)) 
-					
+BN_FILES 		= 	start_solong.c	\
+					read_map.c		\
+					utils.c			\
+					display_map.c		\
+					load_png_to_image.c
+
+MAN_SRCS		= 	main.c 	$(addprefix $(MAN_DIR)/, $(MAN_FILES)) 
+
+BN_SRCS			= 	main.c 	$(addprefix $(BN_DIR)/, $(BN_FILES)) 
+
 # Library
 MYLIB 			= $(MYLIB_DIR)/mylib.a
 MLX42			= $(MLX42_DIR)/build/libmlx42.a
@@ -39,10 +50,19 @@ MLX42			= $(MLX42_DIR)/build/libmlx42.a
 NAME 			= so_long
 
 # Targets
-all : $(NAME)
+all : mandatory
 
-$(NAME): $(MYLIB) $(MLX42) $(MAN_SRCS)
+mandatory : .mandatory
+.mandatory: $(MYLIB) $(MLX42) $(MAN_SRCS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(MAN_SRCS) $(MYLIB) $(MLX42) $(MLX42_FLAGS) -o $(NAME)
+	@touch .mandatory
+	@$(RM) .bonus
+
+bonus: .bonus
+.bonus: $(MYLIB) $(MLX42) $(BN_SRCS)
+	$(CC) $(CFLAGS) $(INCLUDES) $(BN_SRCS) $(MYLIB) $(MLX42) $(MLX42_FLAGS) -o $(NAME)
+	@touch .bonus
+	@$(RM) .mandatory
 
 $(MYLIB):
 	$(MAKE) -C $(MYLIB_DIR)
