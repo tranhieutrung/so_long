@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 00:35:19 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/20 11:36:34 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	validate_path(t_map *map, char *map_path)
 {
-	int		len;
+	int32_t		len;
 
 	map->fd = open(map_path, O_RDONLY);
 	if (map->fd < 0)
@@ -35,19 +35,19 @@ static void	validate_path(t_map *map, char *map_path)
 		handle_file_error(map, map_path, "Hidden file");
 }
 
-static void	flood_fill(t_map *map, char **visited, int x, int y)
+static void	flood_fill(t_map *map, char **visited, int32_t row, int32_t col)
 {
-	if (visited[x][y] == '1')
+	if (visited[row][col] == '1')
 		return ;
-	if (visited[x][y] == 'C')
+	if (visited[row][col] == 'C')
 		map->c_paths++;
-	else if (visited[x][y] == 'E')
+	else if (visited[row][col] == 'E')
 		map->e_paths = 1;
-	visited[x][y] = '1';
-	flood_fill(map, visited, x + 1, y);
-	flood_fill(map, visited, x - 1, y);
-	flood_fill(map, visited, x, y + 1);
-	flood_fill(map, visited, x, y - 1);
+	visited[row][col] = '1';
+	flood_fill(map, visited, row + 1, col);
+	flood_fill(map, visited, row - 1, col);
+	flood_fill(map, visited, row, col + 1);
+	flood_fill(map, visited, row, col - 1);
 }
 
 static void	validate_objects(t_map *map)
@@ -67,7 +67,7 @@ static void	validate_objects(t_map *map)
 	visited = ft_matrix_dup(map->arr, map->rows);
 	if (!visited)
 		handle_map_error(map, "More than 1 exit");
-	flood_fill(map, visited, map->p_row, map->p_col);
+	flood_fill(map, visited, map->player.row, map->player.col);
 	ft_free_triptr(&visited);
 	if (!map->e_paths)
 		handle_map_error(map, "No valid path to exit");
@@ -75,11 +75,11 @@ static void	validate_objects(t_map *map)
 		handle_map_error(map, "No valid path to all collectibles");
 }
 
-void	validate_map(t_map *map, int row, int col)
+void	validate_map(t_map *map, int32_t row, int32_t col)
 {
 	while (++row < map->rows)
 	{
-		if ((int)(ft_strlen(map->arr[row])) != map->cols)
+		if ((int32_t)(ft_strlen(map->arr[row])) != map->cols)
 			handle_map_error(map, "Not rectangular");
 		col = -1;
 		while (++col < map->cols)
@@ -88,12 +88,11 @@ void	validate_map(t_map *map, int row, int col)
 				handle_map_error(map, "Invalid characters");
 			if (map->arr[row][0] != '1' || map->arr[row][map->cols -1] != '1'
 				|| map->arr[0][col] != '1' || map->arr[map->rows -1][col] != 49)
-				handle_map_error(map, "Not enclosed by walls");
+				handle_map_error(map, "Not surrounded by walls");
 			if (map->arr[row][col] == 'P')
 			{
 				map->p_count++;
-				map->p_row = row;
-				map->p_col = col;
+				map->player = (t_point){row, col};
 			}
 			if (map->arr[row][col] == 'C')
 				map->c_count++;
@@ -106,7 +105,7 @@ void	validate_map(t_map *map, int row, int col)
 
 void	read_map(t_map *map, char *map_path)
 {
-	int		byte;
+	int32_t	byte;
 	char	line[BUFFER_SIZE];
 
 	validate_path(map, map_path);
@@ -116,7 +115,7 @@ void	read_map(t_map *map, char *map_path)
 		handle_map_error(map, "Reading failed");
 	else if (byte == 0)
 		handle_map_error(map, "Empty map");
-	else if (byte > MAX_COL * (MAX_ROW + 1))
+	else if (byte > (MAX_COL + 1) * MAX_ROW)
 		handle_map_error(map, "Is too large");
 	map->arr = ft_split(line, '\n');
 	if (!map->arr)
