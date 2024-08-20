@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 00:35:35 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/20 11:48:29 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,48 +32,37 @@
 
 typedef struct s_point
 {
-	int		row;
-	int		col;
+	int32_t	row;
+	int32_t	col;
 }	t_point;
 
 typedef struct s_map
 {
 	char	**arr;
-	int		fd;
-	int		rows;
-	int		cols;
-	int		p_count;
-	int		p_row;
-	int		p_col;
-	int		e_count;
-	int		c_count;
-	int		c_paths;
-	int		e_paths;
+	int32_t	fd;
+	int32_t	rows;
+	int32_t	cols;
+	int32_t	p_count;
+	t_point	player;
+	int32_t	e_count;
+	int32_t	c_count;
+	int32_t	c_paths;
+	int32_t	e_paths;
 }	t_map;
 
 typedef struct s_solong
 {
 	t_map		*map;
 	mlx_t		*mlx;
-	int			width;
-	int			height;
+	int32_t		width;
+	int32_t		height;
 	mlx_image_t	**image;
 	t_point		current;
 	t_point		next;
 	t_point		exit;
-	int			taken;
-	int			tile;
-	int			moves;
+	int32_t		taken;
+	int32_t		moves;
 }	t_solong;
-
-typedef enum s_image
-{
-	SPACE,
-	WALL,
-	PLAYER,
-	COLLECTIBLE,
-	EXIT
-}	t_image;
 
 //		ALGORITHM	//
 
@@ -86,8 +75,8 @@ void	close_hook(void *param);
 //		UTILS		//
 void	handle_file_error(t_map *map, char *map_path, char *message);
 void	handle_map_error(t_map *map, char *message);
-void	handle_game_error(t_solong *sl, char *message);
-void	exit_solong(t_solong *sl, int stt);
-void	add_image(t_solong *sl, mlx_image_t *image, t_point p);
+void	handle_game_error(t_solong *sl, const char *message);
+void	exit_solong(t_solong *sl, int32_t stt);
+void	render_image(t_solong *sl, mlx_image_t *image, t_point p);
 
 #endif
