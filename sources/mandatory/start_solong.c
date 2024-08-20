@@ -6,91 +6,83 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 11:53:16 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/20 23:14:55 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	render_image(t_solong *sl, mlx_image_t *image, t_point current)
+static void	move_player(t_solong *sl)
 {
-	if (mlx_image_to_window(sl->mlx, image, current.col * TEXTURE_SIZE,
-			current.row * TEXTURE_SIZE) < 0)
-		handle_game_error(sl, "cannot draw image to windows.");
+	image_to_window(sl, sl->image[0], sl->current.row, sl->current.col);
+	if (sl->map->arr[sl->next.row][sl->next.col] == 'C')
+	{
+		sl->map->arr[sl->current.row][sl->current.col] = '0';
+		sl->taken++;
+		image_to_window(sl, sl->image[0], sl->next.row, sl->next.col);
+		if (sl->taken == sl->map->c_count)
+			image_to_window(sl, sl->image[4],
+				sl->map->exit.row, sl->map->exit.col);
+	}
+	else if (sl->next.row == sl->map->exit.row
+		&& sl->next.col == sl->map->exit.col && sl->taken == sl->map->c_count)
+	{
+		ft_printf_fd(1, "Number of movements: %u\n", ++sl->moves);
+		ft_printf_fd(1, "You win!\n");
+		exit_solong(sl, EXIT_SUCCESS);
+	}
+	sl->map->arr[sl->current.row][sl->current.col] = '0';
+	sl->map->arr[sl->next.row][sl->next.col] = 'P';
+	ft_printf_fd(1, "Number of movements: %u\n", ++sl->moves);
+	image_to_window(sl, sl->image[2], sl->next.row, sl->next.col);
+	sl->current = sl->next;
 }
 
-static void	display_image(t_solong *sl, t_point current)
+static void	key_hook(mlx_key_data_t keydata, void *param)
 {
-	if (sl->map->arr[current.row][current.col] == '0')
-		render_image(sl, sl->image[0], current);
-	else if (sl->map->arr[current.row][current.col] == '1')
-		render_image(sl, sl->image[1], current);
-	else if (sl->map->arr[current.row][current.col] == 'P')
+	t_solong	*sl;
+
+	sl = (t_solong *)param;
+	if (keydata.action == MLX_PRESS)
 	{
-		render_image(sl, sl->image[0], current);
-		render_image(sl, sl->image[2], current);
-		sl->current = (t_point){current.row, current.col};
-	}
-	else if (sl->map->arr[current.row][current.col] == 'C')
-	{
-		render_image(sl, sl->image[0], current);
-		render_image(sl, sl->image[3], current);
-	}
-	else if (sl->map->arr[current.row][current.col] == 'E')
-	{
-		render_image(sl, sl->image[0], current);
-		sl->exit = (t_point){current.row, current.col};
+		if (keydata.key == MLX_KEY_ESCAPE)
+			exit_solong(sl, EXIT_SUCCESS);
+		else if (keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_UP)
+			sl->next = (t_point){sl->current.row - 1, sl->current.col};
+		else if (keydata.key == MLX_KEY_S || keydata.key == MLX_KEY_DOWN)
+			sl->next = (t_point){sl->current.row + 1, sl->current.col};
+		else if (keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_LEFT)
+			sl->next = (t_point){sl->current.row, sl->current.col - 1};
+		else if (keydata.key == MLX_KEY_D || keydata.key == MLX_KEY_RIGHT)
+			sl->next = (t_point){sl->current.row, sl->current.col + 1};
+		else
+			return ;
+		if (sl->map->arr[sl->next.row][sl->next.col] != '1')
+			move_player(sl);
 	}
 }
 
-static mlx_image_t	*save_image(t_solong *sl, const char *path)
+static void	close_hook(void *param)
 {
-	mlx_texture_t	*texture;
-	mlx_image_t		*image;
-
-	texture = mlx_load_png(path);
-	if (!texture)
-		handle_game_error(sl, mlx_strerror(mlx_errno));
-	image = mlx_texture_to_image(sl->mlx, texture);
-	mlx_delete_texture(texture);
-	if (!image)
-		handle_game_error(sl, mlx_strerror(mlx_errno));
-	if (!mlx_resize_image(image, TEXTURE_SIZE, TEXTURE_SIZE))
-		handle_game_error(sl, mlx_strerror(mlx_errno));
-	return (image);
+	exit_solong((t_solong *)param, EXIT_SUCCESS);
 }
 
-static void	display_map(t_solong *sl)
+static void	init_solong(t_solong *sl)
 {
-	int32_t	row;
-	int32_t	col;
-
-	sl->image = malloc(TEXTURE_NUM * sizeof(mlx_image_t));
-	if (!sl->image)
-		handle_game_error(sl, "Allocation error on read texture.");
-	sl->image[0] = save_image(sl, "./assets/textures/space.png");
-	sl->image[1] = save_image(sl, "./assets/textures/wall.png");
-	sl->image[2] = save_image(sl, "./assets/textures/player.png");
-	sl->image[3] = save_image(sl, "./assets/textures/collectible.png");
-	sl->image[4] = save_image(sl, "./assets/textures/exit.png");
-	row = -1;
-	while (++row < sl->map->rows)
-	{
-		col = -1;
-		while (++col < sl->map->cols)
-			display_image(sl, (t_point){row, col});
-	}
+	sl->width = sl->map->cols * PIXELS;
+	sl->height = sl->map->rows * PIXELS;
+	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
+	sl->mlx = mlx_init(sl->width, sl->height, "so_long", true);
+	if (!sl->mlx)
+		game_error(sl, mlx_strerror(mlx_errno));
+	sl->current = sl->map->start;
+	load_png_to_image(sl);
+	display_map(sl, -1, -1);
 }
 
 void	start_solong(t_solong *sl)
 {
-	sl->width = sl->map->cols * TEXTURE_SIZE;
-	sl->height = sl->map->rows * TEXTURE_SIZE;
-	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
-	sl->mlx = mlx_init(sl->width, sl->height, "so_long", true);
-	if (!sl->mlx)
-		handle_game_error(sl, mlx_strerror(mlx_errno));
-	display_map(sl);
+	init_solong(sl);
 	mlx_key_hook(sl->mlx, key_hook, sl);
 	mlx_close_hook(sl->mlx, close_hook, sl);
 	mlx_loop(sl->mlx);

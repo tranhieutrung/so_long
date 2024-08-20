@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Suppress output for make commands
-make fclean > /dev/null
+# make fclean > /dev/null
 make > /dev/null
 
 # Define color and bold formatting
@@ -64,4 +64,4 @@ echo -e
 run_valgrind "Test 1: 1.ber" "./so_long assets/maps/1.ber"
 run_valgrind "Test 2: 2.ber" "./so_long assets/maps/2.ber"
 
-make fclean > /dev/null
+# make fclean > /dev/null
