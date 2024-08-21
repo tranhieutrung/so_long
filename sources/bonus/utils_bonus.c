@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 23:26:04 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/21 15:09:04 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
-void	exit_solong(t_solong *sl, int32_t stt)
+static void free_sprite(t_solong *sl)
+{
+	if (!sl)
+		return ;
+	if (sl->sprite)
+	{
+		index = -1;
+		while (++index < PNG_TYPE && sl->sprite[index])
+		{
+			mlx_delete_image(sl->mlx, sl->sprite[index]->image);
+			free(sl->sprite[index]);
+		}
+		free(sl->sprite);
+	}
+}
+
+void	exit_solong(t_solong *sl, int32_t status)
 {
 	int32_t	index;
 
@@ -23,13 +39,14 @@ void	exit_solong(t_solong *sl, int32_t stt)
 	if (sl->image)
 	{
 		index = -1;
-		while (++index < TEXTURE_NUM)
+		while (++index < PNG_TYPE && sl->image[index])
 			mlx_delete_image(sl->mlx, sl->image[index]);
 		free(sl->image);
 	}
+	free_sprite(sl);
 	if (sl->mlx)
 		mlx_terminate(sl->mlx);
-	exit (stt);
+	exit (status);
 }
 
 void	map_error(t_map *map, char *message)
@@ -48,6 +65,8 @@ void	game_error(t_solong *sl, const char *message)
 
 void	count_objects(t_map *map, int32_t row, int32_t col)
 {
+	if (map->arr[row][col] == '0')
+		map->s_count++;
 	if (map->arr[row][col] == 'P')
 	{
 		map->p_count++;

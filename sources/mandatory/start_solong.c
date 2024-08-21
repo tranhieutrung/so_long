@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 23:14:55 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/21 11:52:16 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ static void	move_player(t_solong *sl)
 	else if (sl->next.row == sl->map->exit.row
 		&& sl->next.col == sl->map->exit.col && sl->taken == sl->map->c_count)
 	{
-		ft_printf_fd(1, "Number of movements: %u\n", ++sl->moves);
+		ft_printf_fd(1, "Number of movements: %d\n", ++sl->moves);
 		ft_printf_fd(1, "You win!\n");
 		exit_solong(sl, EXIT_SUCCESS);
 	}
 	sl->map->arr[sl->current.row][sl->current.col] = '0';
 	sl->map->arr[sl->next.row][sl->next.col] = 'P';
-	ft_printf_fd(1, "Number of movements: %u\n", ++sl->moves);
+	ft_printf_fd(1, "Number of movements: %d\n", ++sl->moves);
 	image_to_window(sl, sl->image[2], sl->next.row, sl->next.col);
 	sl->current = sl->next;
 }
