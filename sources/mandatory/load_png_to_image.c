@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 23:13:28 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/21 10:31:23 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static mlx_image_t	*png_to_image(t_solong *sl, const char *path)
 
 void	load_png_to_image(t_solong *sl)
 {
-	sl->image = malloc(TEXTURE_NUM * sizeof(mlx_image_t));
+	sl->image = ft_calloc(PNG_TYPE + 1, sizeof(mlx_image_t));
 	if (!sl->image)
 		game_error(sl, "Memory allocation failed");
 	sl->image[0] = png_to_image(sl, "./assets/textures/space.png");

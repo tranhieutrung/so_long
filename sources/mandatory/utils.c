@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 23:26:31 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/21 10:03:34 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	exit_solong(t_solong *sl, int32_t stt)
 	if (sl->image)
 	{
 		index = -1;
-		while (++index < TEXTURE_NUM)
+		while (++index < PNG_TYPE && sl->image[index])
 			mlx_delete_image(sl->mlx, sl->image[index]);
 		free(sl->image);
 	}

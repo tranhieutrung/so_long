@@ -6,7 +6,7 @@
 #    By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 14:17:11 by hitran            #+#    #+#              #
-#    Updated: 2024/08/20 23:24:02 by hitran           ###   ########.fr        #
+#    Updated: 2024/08/21 11:43:43 by hitran           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,11 @@ MAN_FILES 		= 	start_solong.c	\
 					display_map.c		\
 					load_png_to_image.c	
 
-BN_FILES 		= 	start_solong.c	\
-					read_map.c		\
-					utils.c			\
-					display_map.c		\
-					load_png_to_image.c
+BN_FILES 		= 	start_solong_bonus.c	\
+					read_map_bonus.c		\
+					utils_bonus.c			\
+					display_map_bonus.c		\
+					load_png_bonus.c
 
 MAN_SRCS		= 	main.c 	$(addprefix $(MAN_DIR)/, $(MAN_FILES)) 
 
