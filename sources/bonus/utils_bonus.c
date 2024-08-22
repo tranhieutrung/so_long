@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/21 15:09:04 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/21 21:07:10 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void free_sprite(t_solong *sl)
 {
+	int32_t	index;
+
 	if (!sl)
 		return ;
 	if (sl->sprite)

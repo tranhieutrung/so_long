@@ -6,7 +6,7 @@
 #    By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 14:17:11 by hitran            #+#    #+#              #
-#    Updated: 2024/08/21 11:43:43 by hitran           ###   ########.fr        #
+#    Updated: 2024/08/21 22:50:42 by hitran           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,9 @@ BN_FILES 		= 	start_solong_bonus.c	\
 					read_map_bonus.c		\
 					utils_bonus.c			\
 					display_map_bonus.c		\
-					load_png_bonus.c
+					load_png_bonus.c		\
+					loop_hook_bonus.c		\
+					put_pixel_bonus.c
 
 MAN_SRCS		= 	main.c 	$(addprefix $(MAN_DIR)/, $(MAN_FILES)) 
 
