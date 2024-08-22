@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/21 14:35:31 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/22 15:19:25 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,30 @@
 
 // MAX_ROW = 2160 / PIXELS
 # define MAX_ROW 33
-// BUFFER_SIZE  > MAX_COL * MAX_ROW
+// BUFFER_SIZE  > (MAX_COL + 1) * MAX_ROW
 # define BUFFER_SIZE 2014
-# define PNG_TYPE 6 ///////////////////////////////////////////////////////edit to 5
+# define PNG_TYPE 8 ///////////////////////////////////////////////////////edit to 5
 # define SPRITE_TYPE 3
+
+typedef enum e_state
+{
+	RUN,
+	WIN,
+	LOSE,
+	EXIT
+}	e_state;
+
+typedef enum e_object
+{
+	P,
+	C,
+	T,
+	E,
+	S,
+	W,
+	WIN,
+	LOSE
+}	e_object;
 
 typedef struct s_point
 {
@@ -70,9 +90,10 @@ typedef struct s_solong
 	t_point		current;
 	t_point		next;
 	t_point		*enemies;
-	int32_t		enemie_num;
+	int32_t		enemy_num;
 	int32_t		taken;
 	int32_t		moves;
+	int32_t		state;
 }	t_solong;
 
 //		GAME		//
@@ -80,6 +101,8 @@ void	start_solong(t_solong *sl);
 void	display_map(t_solong *sl, int32_t row, int32_t col);
 void	image_to_window(t_solong *sl, mlx_image_t *im, int32_t r, int32_t c);
 void	load_png(t_solong *sl); //bonus
+void	loop_hook(void *param);
+void	put_pixel(mlx_image_t *img, mlx_image_t *sprite, int32_t x, int32_t y);
 
 //		MAP			//
 void	read_map(t_map *map, int32_t fd);

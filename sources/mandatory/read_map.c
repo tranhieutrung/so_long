@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/20 23:22:36 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/22 14:04:31 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	validate_paths_to_objects(t_map *map)
 
 	visited = ft_matrix_dup(map->arr, map->rows);
 	if (!visited)
-		map_error(map, "More than 1 exit");
+		map_error(map, "Memory allocation failed");
 	flood_fill(map, visited, map->start.row, map->start.col);
 	ft_free_triptr(&visited);
 	if (!map->e_paths)
@@ -68,7 +68,7 @@ static void	validate_map(t_map *map, int32_t row, int32_t col)
 		col = -1;
 		while (++col < map->cols)
 		{
-			if (!ft_strchr("01CEPX\n", map->arr[row][col]))
+			if (!ft_strchr("01CEP\n", map->arr[row][col]))
 				map_error(map, "Contains invalid characters");
 			if ((row == 0 || row == map->rows -1 || col == 0
 					|| col == map->cols -1) && map->arr[row][col] != '1')

@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/21 12:13:16 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/22 14:37:09 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,30 @@
 
 static void	move_player(t_solong *sl)
 {
-	image_to_window(sl, sl->image[0], sl->current.row, sl->current.col);
+	image_to_window(sl, sl->image[S], sl->current.row, sl->current.col);
+	ft_printf_fd(1, "Number of movements: %d\n", ++sl->moves);
 	if (sl->map->arr[sl->next.row][sl->next.col] == 'C')
 	{
 		sl->map->arr[sl->current.row][sl->current.col] = '0';
-		sl->taken++;
-		image_to_window(sl, sl->image[0], sl->next.row, sl->next.col);
-		if (sl->taken == sl->map->c_count)
-			image_to_window(sl, sl->image[4],
+		image_to_window(sl, sl->image[S], sl->next.row, sl->next.col);
+		if (++sl->taken == sl->map->c_count)
+			image_to_window(sl, sl->image[E],
 				sl->map->exit.row, sl->map->exit.col);
 	}
 	else if (sl->next.row == sl->map->exit.row
 		&& sl->next.col == sl->map->exit.col && sl->taken == sl->map->c_count)
 	{
-		ft_printf_fd(1, "Number of movements: %d\n", ++sl->moves);
 		ft_printf_fd(1, "You win!\n");
-		exit_solong(sl, EXIT_SUCCESS);
+		sl->state = WIN;
+	}
+	else if (sl->map->arr[sl->next.row][sl->next.col] == 'T')
+	{
+		ft_printf_fd(1, "You lose!\n");
+		sl->state = LOSE;
 	}
 	sl->map->arr[sl->current.row][sl->current.col] = '0';
 	sl->map->arr[sl->next.row][sl->next.col] = 'P';
-	ft_printf_fd(1, "Number of movements: %d\n", ++sl->moves);
-	image_to_window(sl, sl->image[2], sl->next.row, sl->next.col);
+	image_to_window(sl, sl->image[P], sl->next.row, sl->next.col);
 	sl->current = sl->next;
 }
 
@@ -47,6 +50,8 @@ static void	key_hook(mlx_key_data_t keydata, void *param)
 	{
 		if (keydata.key == MLX_KEY_ESCAPE)
 			exit_solong(sl, EXIT_SUCCESS);
+		if (sl->state != RUN)
+			return ;
 		else if (keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_UP)
 			sl->next = (t_point){sl->current.row - 1, sl->current.col};
 		else if (keydata.key == MLX_KEY_S || keydata.key == MLX_KEY_DOWN)
@@ -83,7 +88,9 @@ static void	init_solong(t_solong *sl)
 void	start_solong(t_solong *sl)
 {
 	init_solong(sl);
+	sl->moves = 0;
 	mlx_key_hook(sl->mlx, key_hook, sl);
+	mlx_loop_hook(sl->mlx, loop_hook, sl);
 	mlx_close_hook(sl->mlx, close_hook, sl);
 	mlx_loop(sl->mlx);
 	exit_solong(sl, EXIT_SUCCESS);
