@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/21 12:09:23 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/23 23:33:21 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,26 @@
 # include <errno.h>
 # include <string.h>
 # include "MLX42.h"
-# define PIXELS 32
+# define PX 64
 
-// MAX_COL = 3840 / PIXELS
+// MAX_COL = 3840 / PX
 # define MAX_COL 60
 
-// MAX_ROW = 2160 / PIXELS
+// MAX_ROW = 2160 / PX
 # define MAX_ROW 33
 // BUFFER_SIZE  > MAX_COL * MAX_ROW
 # define BUFFER_SIZE 2014
-# define PNG_TYPE 5
+# define PNG_TYPE 6
+
+typedef enum e_object
+{
+	P,
+	C,
+	E,
+	O,
+	S,
+	W
+}	e_object;
 
 typedef struct s_point
 {
@@ -68,6 +78,7 @@ void	start_solong(t_solong *sl);
 void	load_png_to_image(t_solong *sl);
 void	display_map(t_solong *sl, int32_t row, int32_t col);
 void	image_to_window(t_solong *sl, mlx_image_t *im, int32_t r, int32_t c);
+void	move_player(t_solong *sl);
 
 //		MAP			//
 void	read_map(t_map *map, int32_t fd);

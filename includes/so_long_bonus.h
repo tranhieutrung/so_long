@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/22 15:19:25 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/24 00:03:07 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,24 @@
 # include <errno.h>
 # include <string.h>
 # include "MLX42.h"
-# define PIXELS 32
-
-// MAX_COL = 3840 / PIXELS
+# define PX 32 // SIZE of an object in pixels
+# define BX 20 // SIZE of an dialog in pixels
+# define O_EXIT "./assets/textures/exit.png"
+// MAX_COL = 3840 / PX
 # define MAX_COL 60
 
-// MAX_ROW = 2160 / PIXELS
+// MAX_ROW = 2160 / PX
 # define MAX_ROW 33
 // BUFFER_SIZE  > (MAX_COL + 1) * MAX_ROW
 # define BUFFER_SIZE 2014
-# define PNG_TYPE 8 ///////////////////////////////////////////////////////edit to 5
+# define PNG_TYPE 11
 # define SPRITE_TYPE 3
 
 typedef enum e_state
 {
-	RUN,
-	WIN,
-	LOSE,
-	EXIT
+	RUNNING,
+	WON,
+	LOST
 }	e_state;
 
 typedef enum e_object
@@ -45,10 +45,13 @@ typedef enum e_object
 	C,
 	T,
 	E,
+	O,
 	S,
 	W,
+	B,
 	WIN,
-	LOSE
+	LOSE,
+	M
 }	e_object;
 
 typedef struct s_point
@@ -89,6 +92,7 @@ typedef struct s_solong
 	t_sprite	**sprite;
 	t_point		current;
 	t_point		next;
+	t_point		box;
 	t_point		*enemies;
 	int32_t		enemy_num;
 	int32_t		taken;
@@ -103,6 +107,7 @@ void	image_to_window(t_solong *sl, mlx_image_t *im, int32_t r, int32_t c);
 void	load_png(t_solong *sl); //bonus
 void	loop_hook(void *param);
 void	put_pixel(mlx_image_t *img, mlx_image_t *sprite, int32_t x, int32_t y);
+void	move_player(t_solong *sl);
 
 //		MAP			//
 void	read_map(t_map *map, int32_t fd);
