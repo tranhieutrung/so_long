@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/21 10:31:23 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/23 14:04:38 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static mlx_image_t	*png_to_image(t_solong *sl, const char *path)
 	mlx_delete_texture(texture);
 	if (!image)
 		game_error(sl, mlx_strerror(mlx_errno));
-	if (!mlx_resize_image(image, PIXELS, PIXELS))
+	if (!mlx_resize_image(image, PX, PX))
 		game_error(sl, mlx_strerror(mlx_errno));
 	return (image);
 }
@@ -34,9 +34,10 @@ void	load_png_to_image(t_solong *sl)
 	sl->image = ft_calloc(PNG_TYPE + 1, sizeof(mlx_image_t));
 	if (!sl->image)
 		game_error(sl, "Memory allocation failed");
-	sl->image[0] = png_to_image(sl, "./assets/textures/space.png");
-	sl->image[1] = png_to_image(sl, "./assets/textures/wall.png");
-	sl->image[2] = png_to_image(sl, "./assets/textures/player.png");
-	sl->image[3] = png_to_image(sl, "./assets/textures/collectible.png");
-	sl->image[4] = png_to_image(sl, "./assets/textures/exit.png");
+	sl->image[S] = png_to_image(sl, "./assets/textures/space.png");
+	sl->image[W] = png_to_image(sl, "./assets/textures/wall.png");
+	sl->image[P] = png_to_image(sl, "./assets/textures/player.png");
+	sl->image[C] = png_to_image(sl, "./assets/textures/collectible.png");
+	sl->image[E] = png_to_image(sl, "./assets/textures/exit.png");
+	sl->image[O] = png_to_image(sl, "./assets/textures/open.png");
 }
