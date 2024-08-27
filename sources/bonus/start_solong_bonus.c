@@ -6,40 +6,58 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/23 23:36:22 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/27 13:09:58 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long_bonus.h"
 
-void	update_object(mlx_image_t *image, t_sprite *sprite, double delta_time)
+static void	put_pixel(mlx_image_t *img, mlx_image_t *spt, int32_t x, int32_t y)
 {
-	static double	accumulator = 0;
-	static int32_t	current_frame = 0;
-	int32_t			frame_index;
+	uint32_t	w;
+	uint32_t	h;
+	uint8_t		*px;
+	int32_t		rbga;
 
-	accumulator += delta_time;
-	frame_index = current_frame % sprite->cols;
-	if (accumulator > 0.083)
+	h = 0;
+	while (h < img->height)
 	{
-		put_pixel(image, sprite->image, frame_index * PX, 0);
-		current_frame++;
-		accumulator -= 0.083;
+		w = 0;
+		while (w < img->width)
+		{
+			if (x + w > spt->width || y + h > spt->height)
+				rbga = 0xFF000000;
+			px = spt->pixels + ((y + h) * spt->width + x + w) * sizeof(int32_t);
+			rbga = *px << 24 | *(px + 1) << 16 | *(px + 2) << 8 | *(px + 3);
+			mlx_put_pixel(img, w, h, rbga);
+			w++;
+		}
+		h++;
 	}
 }
 
-void	loop_hook(void *param)
+static void	loop_hook(void *param)
 {
 	t_solong	*sl;
-	double		delta_time;
+	int32_t		p_frame;
+	int32_t		c_frame;
+	int32_t		t_frame;
 
 	sl = (t_solong *)param;
-	delta_time = sl->mlx->delta_time;
 	if (sl->state == RUNNING)
 	{
-		update_object(sl->image[P], sl->sprite[P], delta_time);
-		update_object(sl->image[C], sl->sprite[C], delta_time);
-		update_object(sl->image[T], sl->sprite[T], delta_time);
+		sl->time += sl->mlx->delta_time;
+		p_frame = sl->current_frame % sl->sprite[P]->cols;
+		c_frame = sl->current_frame % sl->sprite[C]->cols;
+		t_frame = sl->current_frame % sl->sprite[T]->cols;
+		if (sl->time > 0.0833)
+		{
+			put_pixel(sl->image[P], sl->sprite[P]->image, p_frame * PX, 0);
+			put_pixel(sl->image[C], sl->sprite[C]->image, c_frame * PX, 0);
+			put_pixel(sl->image[T], sl->sprite[T]->image, t_frame * PX, 0);
+			sl->current_frame++;
+			sl->time -= 0.0833;
+		}
 	}
 }
 
@@ -71,23 +89,21 @@ static void	key_hook(mlx_key_data_t keydata, void *param)
 
 static void	close_hook(void *param)
 {
-	exit_solong((t_solong *)param, EXIT_SUCCESS);
+	t_solong	*sl;
+
+	sl = (t_solong *)param;
+	mlx_close_window(sl->mlx);
 }
 
 void	start_solong(t_solong *sl)
 {
-	sl->width = sl->map->cols * PX;
-	sl->height = sl->map->rows * PX;
 	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
-	sl->mlx = mlx_init(sl->width, sl->height, "so_long", true);
+	sl->mlx = mlx_init(sl->map->cols * PX, sl->map->rows * PX, "so_long", true);
 	if (!sl->mlx)
 		game_error(sl, mlx_strerror(mlx_errno));
 	sl->current = sl->map->start;
 	load_png(sl);
 	display_map(sl, -1, -1);
-	sl->moves = 0;
-	sl->state=RUNNING;
-	sl->taken = 0;
 	mlx_key_hook(sl->mlx, key_hook, sl);
 	mlx_loop_hook(sl->mlx, loop_hook, sl);
 	mlx_close_hook(sl->mlx, close_hook, sl);

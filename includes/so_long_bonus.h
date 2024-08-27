@@ -6,12 +6,12 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/24 00:03:07 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/27 13:17:12 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_H
-# define SO_LONG_H
+#ifndef SO_LONG_BONUS_H
+# define SO_LONG_BONUS_H
 
 # include "mylib.h"
 # include <stdio.h>
@@ -20,8 +20,17 @@
 # include <string.h>
 # include "MLX42.h"
 # define PX 32 // SIZE of an object in pixels
-# define BX 20 // SIZE of an dialog in pixels
-# define O_EXIT "./assets/textures/exit.png"
+
+# define T_EXIT "./assets/textures/exit.png"
+# define T_OPEN "./assets/textures/open.png"
+# define T_SPACE "./assets/textures/space.png"
+# define T_WALL "./assets/textures/wall.png"
+# define T_WIN "./assets/textures/win.png"
+# define T_LOSE "./assets/textures/lose.png"
+# define S_PLAYER "./assets/sprite/player.png"
+# define S_COLLECTIBLE "./assets/sprite/collectible.png"
+# define S_TRAP "./assets/sprite/trap.png"
+
 // MAX_COL = 3840 / PX
 # define MAX_COL 60
 
@@ -37,7 +46,7 @@ typedef enum e_state
 	RUNNING,
 	WON,
 	LOST
-}	e_state;
+}	t_state;
 
 typedef enum e_object
 {
@@ -48,11 +57,10 @@ typedef enum e_object
 	O,
 	S,
 	W,
-	B,
 	WIN,
 	LOSE,
 	M
-}	e_object;
+}	t_object;
 
 typedef struct s_point
 {
@@ -86,27 +94,22 @@ typedef struct s_solong
 {
 	t_map		*map;
 	mlx_t		*mlx;
-	int32_t		width;
-	int32_t		height;
 	mlx_image_t	**image;
 	t_sprite	**sprite;
 	t_point		current;
 	t_point		next;
-	t_point		box;
-	t_point		*enemies;
-	int32_t		enemy_num;
 	int32_t		taken;
 	int32_t		moves;
 	int32_t		state;
+	double		time;
+	int32_t		current_frame;
 }	t_solong;
 
 //		GAME		//
 void	start_solong(t_solong *sl);
 void	display_map(t_solong *sl, int32_t row, int32_t col);
 void	image_to_window(t_solong *sl, mlx_image_t *im, int32_t r, int32_t c);
-void	load_png(t_solong *sl); //bonus
-void	loop_hook(void *param);
-void	put_pixel(mlx_image_t *img, mlx_image_t *sprite, int32_t x, int32_t y);
+void	load_png(t_solong *sl);
 void	move_player(t_solong *sl);
 
 //		MAP			//

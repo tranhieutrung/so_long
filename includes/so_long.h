@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/23 23:33:21 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/27 13:13:06 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <errno.h>
 # include <string.h>
 # include "MLX42.h"
-# define PX 64
+# define PX 32
 
 // MAX_COL = 3840 / PX
 # define MAX_COL 60
@@ -38,7 +38,7 @@ typedef enum e_object
 	O,
 	S,
 	W
-}	e_object;
+}	t_object;
 
 typedef struct s_point
 {
@@ -64,8 +64,6 @@ typedef struct s_solong
 {
 	t_map		*map;
 	mlx_t		*mlx;
-	int32_t		width;
-	int32_t		height;
 	mlx_image_t	**image;
 	t_point		current;
 	t_point		next;
@@ -75,9 +73,8 @@ typedef struct s_solong
 
 //		GAME		//
 void	start_solong(t_solong *sl);
-void	load_png_to_image(t_solong *sl);
+void	load_png(t_solong *sl);
 void	display_map(t_solong *sl, int32_t row, int32_t col);
-void	image_to_window(t_solong *sl, mlx_image_t *im, int32_t r, int32_t c);
 void	move_player(t_solong *sl);
 
 //		MAP			//

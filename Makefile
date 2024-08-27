@@ -6,7 +6,7 @@
 #    By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/08 14:17:11 by hitran            #+#    #+#              #
-#    Updated: 2024/08/24 00:06:16 by hitran           ###   ########.fr        #
+#    Updated: 2024/08/27 13:18:37 by hitran           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,20 +29,20 @@ UTILS_DIR		= utils
 MAN_FILES 		= 	start_solong.c	\
 					read_map.c		\
 					utils.c			\
-					display_map.c		\
-					load_png_to_image.c		
+					display_map.c	\
+					load_png.c		\
+					move_player.c
 
 BN_FILES 		= 	start_solong_bonus.c	\
 					read_map_bonus.c		\
 					utils_bonus.c			\
 					display_map_bonus.c		\
 					load_png_bonus.c		\
-					put_pixel_bonus.c		\
 					move_player_bonus.c
 
 MAN_SRCS		= 	main.c 	$(addprefix $(MAN_DIR)/, $(MAN_FILES)) 
 
-BN_SRCS			= 	main.c 	$(addprefix $(BN_DIR)/, $(BN_FILES)) 
+BN_SRCS			= 	main_bonus.c 	$(addprefix $(BN_DIR)/, $(BN_FILES)) 
 
 # Library
 MYLIB 			= $(MYLIB_DIR)/mylib.a

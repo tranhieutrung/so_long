@@ -6,13 +6,13 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/23 14:56:06 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/27 13:10:50 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long_bonus.h"
 
-static void free_sprite(t_solong *sl)
+static void	free_sprite(t_solong *sl)
 {
 	int32_t	index;
 

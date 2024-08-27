@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/24 00:31:50 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/27 13:17:22 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ void	display_map(t_solong *sl, int32_t row, int32_t col)
 			else
 			{
 				image_to_window(sl, sl->image[S], row, col);
-				if (sl->map->arr[row][col] == 'P')
-					image_to_window(sl, sl->image[P], row, col);
-				else if (sl->map->arr[row][col] == 'C')
+				if (sl->map->arr[row][col] == 'C')
 					image_to_window(sl, sl->image[C], row, col);
 				else if (sl->map->arr[row][col] == 'E')
 				{
@@ -44,4 +42,5 @@ void	display_map(t_solong *sl, int32_t row, int32_t col)
 			}
 		}
 	}
+	image_to_window(sl, sl->image[P], sl->current.row, sl->current.col);
 }

@@ -1,37 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move_player_bonus.c                                :+:      :+:    :+:   */
+/*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/23 23:31:52 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/27 13:15:21 by hitran           ###   ########.fr       */
+/*   Created: 2024/08/27 13:03:44 by hitran            #+#    #+#             */
+/*   Updated: 2024/08/27 13:05:42 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long_bonus.h"
-
-static void	print_state(t_solong *sl)
-{
-	char	*nbr;
-	t_point	position;
-
-	nbr = ft_itoa(++sl->moves);
-	mlx_delete_image(sl->mlx, sl->image[M]);
-	sl->image[M] = mlx_put_string(sl->mlx, nbr,
-			sl->current.col * PX + PX / 3, sl->current.row * PX - PX / 2);
-	if (!sl->image[M])
-		game_error(sl, mlx_strerror(mlx_errno));
-	position = (t_point){0, 0};
-	if (sl->map->cols > 9)
-		position = (t_point){(sl->map->rows - 3) / 2, (sl->map->cols - 9) / 2};
-	if (sl->state == WON)
-		image_to_window(sl, sl->image[WIN], position.row, position.col);
-	else if (sl->state == LOST)
-		image_to_window(sl, sl->image[LOSE], position.row, position.col);
-	free(nbr);
-}
+#include "so_long.h"
 
 static void	off_collectible(t_solong *sl)
 {
@@ -53,6 +32,7 @@ static void	off_collectible(t_solong *sl)
 void	move_player(t_solong *sl)
 {
 	sl->current = sl->next;
+	ft_printf_fd(1, "Number of movements: %d\n", ++sl->moves);
 	if (sl->map->arr[sl->current.row][sl->current.col] == 'C')
 	{
 		sl->map->arr[sl->current.row][sl->current.col] = '0';
@@ -63,10 +43,10 @@ void	move_player(t_solong *sl)
 	}
 	else if (sl->map->arr[sl->current.row][sl->current.col] == 'E'
 		&& sl->taken == sl->map->c_count)
-		sl->state = WON;
-	else if (sl->map->arr[sl->current.row][sl->current.col] == 'T')
-		sl->state = LOST;
+	{
+		ft_printf_fd(1, "You win!\n");
+		exit_solong(sl, EXIT_SUCCESS);
+	}
 	sl->image[P]->instances[0].x = sl->current.col * PX;
 	sl->image[P]->instances[0].y = sl->current.row * PX;
-	print_state(sl);
 }
