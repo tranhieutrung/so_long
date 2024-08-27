@@ -6,13 +6,14 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/24 00:03:18 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/27 13:10:39 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long_bonus.h"
 
-static mlx_image_t	*png_to_image(t_solong *sl, int32_t height, int32_t width, const char *path)
+static mlx_image_t	*png_to_image(t_solong *sl, int32_t height,
+	int32_t width, const char *path)
 {
 	mlx_texture_t	*texture;
 	mlx_image_t		*image;
@@ -40,7 +41,7 @@ static mlx_image_t	*png_to_image(t_solong *sl, int32_t height, int32_t width, co
 
 static void	load_png_to_image(t_solong *sl)
 {
-	int32_t size;
+	int32_t	size;
 
 	sl->image = ft_calloc(PNG_TYPE + 1, sizeof(mlx_image_t));
 	if (!sl->image)
@@ -48,20 +49,20 @@ static void	load_png_to_image(t_solong *sl)
 	sl->image[P] = png_to_image(sl, PX, PX, NULL);
 	sl->image[C] = png_to_image(sl, PX, PX, NULL);
 	sl->image[T] = png_to_image(sl, PX, PX, NULL);
-	sl->image[E] = png_to_image(sl, PX, PX, O_EXIT);
-	sl->image[O] = png_to_image(sl, PX, PX, "./assets/textures/open.png");
-	sl->image[S] = png_to_image(sl, PX, PX, "./assets/textures/space.png");
-	sl->image[W] = png_to_image(sl, PX, PX, "./assets/textures/wall.png");
-	sl->image[B] = png_to_image(sl, BX, BX, "./assets/textures/box.png");
+	sl->image[E] = png_to_image(sl, PX, PX, T_EXIT);
+	sl->image[O] = png_to_image(sl, PX, PX, T_OPEN);
+	sl->image[S] = png_to_image(sl, PX, PX, T_SPACE);
+	sl->image[W] = png_to_image(sl, PX, PX, T_WALL);
 	size = 3 * PX;
 	if (sl->map->cols < 9)
 		size = sl->map->cols / 3;
-	sl->image[WIN] = png_to_image(sl, size, 3 * size, "./assets/textures/win.png");
-	sl->image[LOSE] = png_to_image(sl, size, 3 * size, "./assets/textures/lose.png");
+	sl->image[WIN] = png_to_image(sl, size, 3 * size, T_WIN);
+	sl->image[LOSE] = png_to_image(sl, size, 3 * size, T_LOSE);
 	sl->image[M] = NULL;
 }
 
-static t_sprite	*png_to_sprite(t_solong *sl, const char *path, int32_t rows, int32_t cols)
+static t_sprite	*png_to_sprite(t_solong *sl, const char *path,
+	int32_t rows, int32_t cols)
 {
 	mlx_texture_t	*texture;
 	t_sprite		*sprite;
@@ -91,9 +92,9 @@ static void	load_png_to_sprite(t_solong *sl)
 	sl->sprite = ft_calloc(SPRITE_TYPE + 1, sizeof(t_sprite));
 	if (!sl->sprite)
 		game_error(sl, "Memory allocation failed");
-	sl->sprite[P] = png_to_sprite(sl, "./assets/sprite/player.png", 1, 12);
-	sl->sprite[C] = png_to_sprite(sl, "./assets/sprite/collectible.png", 1, 17);
-	sl->sprite[T] = png_to_sprite(sl, "./assets/sprite/trap.png", 1, 8);
+	sl->sprite[P] = png_to_sprite(sl, S_PLAYER, 1, 12);
+	sl->sprite[C] = png_to_sprite(sl, S_COLLECTIBLE, 1, 17);
+	sl->sprite[T] = png_to_sprite(sl, S_TRAP, 1, 8);
 }
 
 void	load_png(t_solong *sl)
