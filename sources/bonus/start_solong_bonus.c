@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/27 13:09:58 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/28 11:44:41 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	put_pixel(mlx_image_t *img, mlx_image_t *spt, int32_t x, int32_t y)
 	uint32_t	w;
 	uint32_t	h;
 	uint8_t		*px;
-	int32_t		rbga;
+	int32_t		color;
 
 	h = 0;
 	while (h < img->height)
@@ -26,10 +26,10 @@ static void	put_pixel(mlx_image_t *img, mlx_image_t *spt, int32_t x, int32_t y)
 		while (w < img->width)
 		{
 			if (x + w > spt->width || y + h > spt->height)
-				rbga = 0xFF000000;
+				color = 0xFF000000;
 			px = spt->pixels + ((y + h) * spt->width + x + w) * sizeof(int32_t);
-			rbga = *px << 24 | *(px + 1) << 16 | *(px + 2) << 8 | *(px + 3);
-			mlx_put_pixel(img, w, h, rbga);
+			color = *px << 24 | *(px + 1) << 16 | *(px + 2) << 8 | *(px + 3);
+			mlx_put_pixel(img, w, h, color);
 			w++;
 		}
 		h++;

@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/27 13:05:06 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/28 09:24:55 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	load_png(t_solong *sl)
 	sl->image = ft_calloc(PNG_TYPE + 1, sizeof(mlx_image_t));
 	if (!sl->image)
 		game_error(sl, "Memory allocation failed");
-	sl->image[S] = png_to_image(sl, "./assets/textures/space.png");
-	sl->image[W] = png_to_image(sl, "./assets/textures/wall.png");
-	sl->image[P] = png_to_image(sl, "./assets/textures/player.png");
-	sl->image[C] = png_to_image(sl, "./assets/textures/collectible.png");
-	sl->image[E] = png_to_image(sl, "./assets/textures/exit.png");
-	sl->image[O] = png_to_image(sl, "./assets/textures/open.png");
+	sl->image[S] = png_to_image(sl, T_SPACE);
+	sl->image[W] = png_to_image(sl, T_WALL);
+	sl->image[P] = png_to_image(sl, T_PLAYER);
+	sl->image[C] = png_to_image(sl, T_COLLECTIBLE);
+	sl->image[E] = png_to_image(sl, T_EXIT);
+	sl->image[O] = png_to_image(sl, T_OPEN);
 }

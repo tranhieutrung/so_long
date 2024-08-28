@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/27 13:17:12 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/28 10:27:53 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,21 @@
 # define SO_LONG_BONUS_H
 
 # include "mylib.h"
-# include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
 # include "MLX42.h"
-# define PX 32 // SIZE of an object in pixels
+
+# define PX 64
+// MAX_COL = 3840 / PX
+# define MAX_COL 60
+// MAX_ROW = 2160 / PX
+# define MAX_ROW 33
+// BUFFER_SIZE  > (MAX_COL + 1) * MAX_ROW
+# define BUFFER_SIZE 2014
+
+# define PNG_TYPE 11
+# define SPRITE_TYPE 3
 
 # define T_EXIT "./assets/textures/exit.png"
 # define T_OPEN "./assets/textures/open.png"
@@ -30,16 +39,6 @@
 # define S_PLAYER "./assets/sprite/player.png"
 # define S_COLLECTIBLE "./assets/sprite/collectible.png"
 # define S_TRAP "./assets/sprite/trap.png"
-
-// MAX_COL = 3840 / PX
-# define MAX_COL 60
-
-// MAX_ROW = 2160 / PX
-# define MAX_ROW 33
-// BUFFER_SIZE  > (MAX_COL + 1) * MAX_ROW
-# define BUFFER_SIZE 2014
-# define PNG_TYPE 11
-# define SPRITE_TYPE 3
 
 typedef enum e_state
 {

@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/23 22:36:58 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/28 10:32:28 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,6 @@ static int32_t	validate_path(char *path)
 	if (path[len - 4] != '.' || path[len - 3] != 'b'
 		|| path[len - 2] != 'e' || path[len - 1] != 'r')
 		file_error(fd, path, "Not a .ber file");
-	len -= 4;
-	while (len > 0 && path[len] != '/')
-		len--;
-	if (path[len] == '/')
-		len++;
-	if (path[len] == '.')
-		file_error(fd, path, "Is a hidden file");
 	return (fd);
 }
 

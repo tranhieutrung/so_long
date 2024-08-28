@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:30:53 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/27 13:10:39 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/28 11:24:40 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ static void	load_png_to_image(t_solong *sl)
 	sl->image[O] = png_to_image(sl, PX, PX, T_OPEN);
 	sl->image[S] = png_to_image(sl, PX, PX, T_SPACE);
 	sl->image[W] = png_to_image(sl, PX, PX, T_WALL);
-	size = 3 * PX;
-	if (sl->map->cols < 9)
-		size = sl->map->cols / 3;
-	sl->image[WIN] = png_to_image(sl, size, 3 * size, T_WIN);
-	sl->image[LOSE] = png_to_image(sl, size, 3 * size, T_LOSE);
+	size = 9 * PX;
+	if (sl->map->cols < 6)
+		size = 3 * PX;
+	else if (sl->map->cols >= 6 && sl->map->cols < 9)
+		size = 6 * PX;
+	sl->image[WIN] = png_to_image(sl, size / 3, size, T_WIN);
+	sl->image[LOSE] = png_to_image(sl, size / 3, size, T_LOSE);
 	sl->image[M] = NULL;
 }
 
