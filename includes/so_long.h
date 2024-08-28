@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:12:42 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/27 13:13:06 by hitran           ###   ########.fr       */
+/*   Updated: 2024/08/28 10:27:50 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,27 @@
 # define SO_LONG_H
 
 # include "mylib.h"
-# include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
 # include "MLX42.h"
-# define PX 32
 
+# define PX 64
 // MAX_COL = 3840 / PX
 # define MAX_COL 60
-
 // MAX_ROW = 2160 / PX
 # define MAX_ROW 33
 // BUFFER_SIZE  > MAX_COL * MAX_ROW
 # define BUFFER_SIZE 2014
+
 # define PNG_TYPE 6
+
+# define T_PLAYER "./assets/textures/player.png"
+# define T_COLLECTIBLE "./assets/textures/collectible.png"
+# define T_EXIT "./assets/textures/exit.png"
+# define T_OPEN "./assets/textures/open.png"
+# define T_SPACE "./assets/textures/space.png"
+# define T_WALL "./assets/textures/wall.png"
 
 typedef enum e_object
 {
