@@ -6,7 +6,7 @@
 /*   By: hitran <hitran@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:17:25 by hitran            #+#    #+#             */
-/*   Updated: 2024/08/28 10:32:28 by hitran           ###   ########.fr       */
+/*   Updated: 2025/02/18 11:43:28 by hitran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ static int32_t	validate_path(char *path)
 	if (fd < 0)
 		file_error(0, path, strerror(errno));
 	len = ft_strlen(path);
-	if (path[len - 4] != '.' || path[len - 3] != 'b'
-		|| path[len - 2] != 'e' || path[len - 1] != 'r')
+	if (len < 5 || ft_strncmp(path + len - 4, ".ber", 4) != 0)
 		file_error(fd, path, "Not a .ber file");
 	return (fd);
 }
